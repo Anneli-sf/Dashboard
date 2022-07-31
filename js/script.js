@@ -1,5 +1,4 @@
 
-// const TABLE = document.querySelector('.table');
 const TABLE_HEAD = document.querySelector('.table-head');
 const TABLE_BODY = document.querySelector('.table-body');
 const SELECT = document.querySelector('.select');
@@ -11,6 +10,7 @@ let activeOption = mainData.departures;
 document.addEventListener('DOMContentLoaded', () => { 
     showTable(activeOption);
 });
+
 
 //----------------------------------------------------switch arrival / departure
 SELECT.addEventListener('change', (option) => {
@@ -39,26 +39,16 @@ function createHead(option) {
     TABLE_HEAD_ROW.classList.add('table-head-row');
 
     TABLE_HEAD_ROW.innerHTML = `
-        <th id="sched">TIME</th>
-        <th id="apname">DESTINATION</th> 
-       
-        <th id="alname">AIRLINE</th>
-        <th id="fnr">FLIGHT</th>
+        <th id="sched" class="sched">TIME</th>
+        <th id="apname" class="apname">DESTINATION</th> 
+        <th id="apname-fnr" class="apname-fnr hidden">DESTINATION / AIRLINE</th>
+        <th id="alname" class="alname">AIRLINE</th>
+        <th id="fnr" class="fnr">FLIGHT</th>
         <th id="gate" class="gate">GATE</th>
-        <th id="status">STATUS</th>                              
+        <th id="status" class="status">STATUS</th>                              
     `
     
     TABLE_HEAD.appendChild(TABLE_HEAD_ROW);
-
-    // <th class="apname-fnr>DESTINATION / AIRLINE</th> 
-    // document.querySelector('.apname-fnr').classList.add('hidden');
-
-    // if (MEDIA_QUERIES.matches) { //--------------------------hide the column if width=600px;
-    //     let destn = document.querySelector('#apname');
-    //     destn.innerHTML = `
-    //         <th id="apname">DESTINATION / FLIGHT</th>
-    //     `      
-    // }
 
     if (option === mainData.arrivals) {//--------------------------there is no GATE in Arrival;
         document.querySelectorAll(".gate").classList.add('hidden');
@@ -71,24 +61,14 @@ function createBody(option) {
             const TABLE_BODY_ROW = document.createElement('tr');
             TABLE_BODY_ROW.classList.add('table-body-row');
             TABLE_BODY_ROW.innerHTML += `
-                <td>${formatTime(option[i].sched)}</td>
+                <td class="sched">${formatTime(option[i].sched)}</td>
                 <td class="apname">${option[i].apname}</td>
-               
-                <td>${option[i].alname}</td>
+                <td class="apname-fnr hidden">${option[i].apname} - <b>${option[i].fnr}</b></td>
+                <td class="alname">${option[i].alname}</td>
                 <td class="fnr">${option[i].fnr}</td>
                 <td class="gate">${option[i].gate}</td>
-                <td>${option[i].status}</td>       
+                <td class="status">${option[i].status}</td>       
         `;
-
-        // <td class="apname-fnr">${option[i].apname} /<br><b>${option[i].fnr}</b></td>
-        // if (MEDIA_QUERIES.matches) {
-        //     //--------------------------hide the column if width=600px;
-        //     let dest = document.querySelectorAll('.apname');
-        //     dest.forEach((el, index) => el.innerHTML = `
-        //         <td class="apname hidden">${option[index].apname} /<br><b>${option[index].fnr}</b></td>
-        //     `
-        //     )           
-        // }
 
         TABLE_BODY.append(TABLE_BODY_ROW);
         }
@@ -101,9 +81,6 @@ function createBody(option) {
 }
 
 
-
-
-
 //----------------------------------SORTING-------------------------
 let order = 'abc';
 let currSortCol;
@@ -111,7 +88,7 @@ let count = 0;
 
 function sortTable(col) {
     
-    let currCol = col.target.id;
+    let currCol = col.target.id; console.log(currCol)
     let sortStr;
     let sortDate;
     
