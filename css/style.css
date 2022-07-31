@@ -188,6 +188,10 @@ tbody tr:nth-child(odd) {
     text-align: left;
 }
 
+.apname-fnr {
+    display: none;
+}
+
 
 
 /* -----------------------------FOOTER------------------------------ */
