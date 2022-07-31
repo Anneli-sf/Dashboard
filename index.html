@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable</title>
+    <link rel="icon" href="./assets/icons/airplane_icon.ico">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/media.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<div class="wrapper">
+    <!-------------------------------------HEADER------------------------>
+    <div class="header">
+        <div class="container">
+            <div class="header-nav">
+                <p class="header-title">I'm looking for</p>
+                <select name="select" id="select" class="select">
+                    <option value="departures" class="option">departure</option>
+                    <option value="arrivals" class="option">arrival</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-------------------------------------MAIN------------------------>
+    <div class="main">
+        <div class="container">
+            <section class="section">
+                <div class="table-wrapper">
+                    <div class="table-scroll">
+                            <table class="table">
+                                <thead class = "table-head">
+                                    <tr class="table-head-row"></tr>
+                                </thead>
+                            </table>
+                
+                            <div class="table-body-scroll">
+                                <table class="table">
+                                    <tbody class = "table-body">
+                                        <tr class="table-body-row"></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>          
+            </div>
+            </section>
+        </div>
+    </div>
+
+    <!-------------------------------------FOOTER------------------------>
+    <div class="footer">
+        <div class="container">
+                <ul class="footer-nav">
+                    <li class="footer-nav-item">
+                        <a href="mailto:foranneli@gmail.com">contact us</a>
+                    </li>
+                    <li class="footer-nav-item">
+                        <a href="https://www.instagram.com/godel_technologies/" target="_blank">
+                            <img src="./assets/icons/icons_instagram.svg" alt="instagram">
+                        </a>
+                    </li>
+                </ul>
+        </div>
+    </div>
+</div>
+
+    <script src="./js/data.js"></script>
+    <script type="module" src="./js/script.js"></script>
+</body>
+</html>
