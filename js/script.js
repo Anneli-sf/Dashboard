@@ -1,5 +1,4 @@
 
-// const TABLE = document.querySelector('.table');
 const TABLE_HEAD = document.querySelector('.table-head');
 const TABLE_BODY = document.querySelector('.table-body');
 const SELECT = document.querySelector('.select');
@@ -11,6 +10,7 @@ let activeOption = mainData.departures;
 document.addEventListener('DOMContentLoaded', () => { 
     showTable(activeOption);
 });
+
 
 //----------------------------------------------------switch arrival / departure
 SELECT.addEventListener('change', (option) => {
@@ -39,22 +39,16 @@ function createHead(option) {
     TABLE_HEAD_ROW.classList.add('table-head-row');
 
     TABLE_HEAD_ROW.innerHTML = `
-        <th id="sched">TIME</th>
-        <th id="apname">DESTINATION</th> 
-        <th id="alname">AIRLINE</th>
-        <th id="fnr">FLIGHT</th>
+        <th id="sched" class="sched">TIME</th>
+        <th id="apname" class="apname">DESTINATION</th> 
+        <th id="apname" class="apname-fnr hidden">DESTINATION / AIRLINE</th>
+        <th id="alname" class="alname">AIRLINE</th>
+        <th id="fnr" class="fnr">FLIGHT</th>
         <th id="gate" class="gate">GATE</th>
-        <th id="status">STATUS</th>                              
+        <th id="status" class="status">STATUS</th>                              
     `
     
     TABLE_HEAD.appendChild(TABLE_HEAD_ROW);
-
-    if (MEDIA_QUERIES.matches) { //--------------------------hide the column if width=600px;
-        let destn = document.querySelector('#apname');
-        destn.innerHTML = `
-            <th id="apname">DESTINATION / FLIGHT</th>
-        `      
-    }
 
     if (option === mainData.arrivals) {//--------------------------there is no GATE in Arrival;
         document.querySelectorAll(".gate").classList.add('hidden');
@@ -67,22 +61,14 @@ function createBody(option) {
             const TABLE_BODY_ROW = document.createElement('tr');
             TABLE_BODY_ROW.classList.add('table-body-row');
             TABLE_BODY_ROW.innerHTML += `
-                <td>${formatTime(option[i].sched)}</td>
+                <td class="sched">${formatTime(option[i].sched)}</td>
                 <td class="apname">${option[i].apname}</td>
-                <td>${option[i].alname}</td>
+                <td class="apname-fnr hidden">${option[i].apname} - <b>${option[i].fnr}</b></td>
+                <td class="alname">${option[i].alname}</td>
                 <td class="fnr">${option[i].fnr}</td>
                 <td class="gate">${option[i].gate}</td>
-                <td>${option[i].status}</td>       
+                <td class="status">${option[i].status}</td>       
         `;
-
-        
-        if (MEDIA_QUERIES.matches) {//--------------------------hide the column if width=600px;
-            let dest = document.querySelectorAll('.apname');
-            dest.forEach((el, index) => el.innerHTML = `
-                <td class="apname">${option[index].apname} /<br><b>${option[index].fnr}</b></td>
-            `
-            )           
-        }
 
         TABLE_BODY.append(TABLE_BODY_ROW);
         }
@@ -94,98 +80,71 @@ function createBody(option) {
 
 }
 
-function formatTime(str) {
-        return str.slice(11, 16);
-    }
-
 
 //----------------------------------SORTING-------------------------
 let order = 'abc';
-// let currSortCol = null;
-// let currentOption = 'departures';
+let currSortCol;
 let count = 0;
 
 function sortTable(col) {
     
-    let currCol = col.target.id;
-
-    if (currCol !== 'sched') {//--------------------------if click on String
-
-        let sortStr = (a, b) => a[currCol] > b[currCol] ? 1 : -1;
-            
-            if (order === 'cba') {
-                sortStr = (a, b) => a[currCol] > b[currCol] ? -1 : 1;
-            } 
-            
-        activeOption.sort(sortStr);
-    } 
-    else {   
-
-        let sortDate = function(a, b) { //--------------------------if click on Date
-            let rowA = new Date(a[currCol]);
-            let rowB = new Date(b[currCol]);
-            return rowA > rowB ? 1 : -1;
-            } 
-            
-            if (order === 'abc') {
-                sortDate = function(a, b) {
-                    let rowA = new Date(a[currCol]);
-                    let rowB = new Date(b[currCol]);
-                    return rowA > rowB ? -1 : 1;
-                } 
-            } 
-
-        activeOption.sort(sortDate);
-        
-    };
-
-    if (order === 'abc' ) {
-        order = 'cba';
-    } else 
+    let currCol = col.target.id; 
+    let sortStr;
+    let sortDate;
+    
+    if (currSortCol !== currCol || (currSortCol === currCol && count % 2 === 0)) {
         order = 'abc';
 
-        TABLE_BODY.innerHTML = '';
-        createBody(activeOption);
+        if (currCol !== 'sched') {
+            sortStr = sortStrAbc(currCol);
+        }
+        else { sortDate = sortDateAbc(currCol) 
+        }
+
+        count++;
+    }    
+    else {
+        order = 'cba';
+        if (currCol !== 'sched') {
+            sortStr = sortStrBca(currCol);
+        }
+        else { sortDate = sortDateBca(currCol); 
+        }
+        count++;
+    } 
+
+    activeOption.sort(sortStr);
+    activeOption.sort(sortDate);
+
+    currSortCol = currCol;
+
+    TABLE_BODY.innerHTML = '';
+    createBody(activeOption);
 }
 
-// TABLE_HEAD.addEventListener('click', (col) => {
-    
-//     let currCol = col.target.id;
-//     let sortStr;
-    
-//     if (currSortCol !== currCol) {
-//         order = 'abc';
-//         sortStr = (a, b) => a[currCol] > b[currCol] ? 1 : -1;
-//         count++;
-//     }    
-//     else if (currSortCol === currCol && count % 2 !== 0) {
-//         order = 'cba';
-//         sortStr = (a, b) => a[currCol] > b[currCol] ? -1 : 1;
-//         count = 0;
-//     } 
-//     else if (currSortCol === currCol && count % 2 == 0) {
-//         order = 'abc';
-//         sortStr = (a, b) => a[currCol] > b[currCol] ? 1 : -1;
-//         count++;
-//     }
 
-//     activeOption.sort(sortStr);
+//-------------------------------------ADDITIONAL FUNCTIONS---------------------
 
-//     currSortCol = currCol;
+function formatTime(str) {
+    return str.slice(11, 16);
+}
 
-//     TABLE_BODY.innerHTML = '';
-//     createBody(activeOption);
+function sortStrAbc(item) {
+	return (a, b) => (a[item] >= b[item] ? 1 : -1);
+}
 
-// })
+function sortStrBca(item) {
+	return (a, b) => (a[item] >= b[item] ? -1 : 1);
+}
 
+function sortDateAbc(item) {
+	return (a, b) => (new Date(a[item]) > new Date(b[item]) ? 1 : -1);
+}
 
-// function sortFuncAbc(arr) {
-//     return arr.sort((a,b) => a[arr] > b[arr] ? 1 : -1)
-// }
+function sortDateBca(item) {
+	return (a, b) => (new Date(a[item]) > new Date(b[item]) ? -1 : 1);
+}
 
-// function sortFuncBca(arr) {
-//     return arr.sort((a,b) => a[arr] > b[arr] ? -1 : 1)
-// }
 
 
 
