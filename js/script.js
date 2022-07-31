@@ -41,7 +41,7 @@ function createHead(option) {
     TABLE_HEAD_ROW.innerHTML = `
         <th id="sched" class="sched">TIME</th>
         <th id="apname" class="apname">DESTINATION</th> 
-        <th id="apname-fnr" class="apname-fnr hidden">DESTINATION / AIRLINE</th>
+        <th id="apname" class="apname-fnr hidden">DESTINATION / AIRLINE</th>
         <th id="alname" class="alname">AIRLINE</th>
         <th id="fnr" class="fnr">FLIGHT</th>
         <th id="gate" class="gate">GATE</th>
@@ -88,7 +88,7 @@ let count = 0;
 
 function sortTable(col) {
     
-    let currCol = col.target.id; console.log(currCol)
+    let currCol = col.target.id; 
     let sortStr;
     let sortDate;
     
